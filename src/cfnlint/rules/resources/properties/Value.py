@@ -21,7 +21,7 @@ import cfnlint.helpers
 
 class Value(CloudFormationLintRule):
     """Check if Resource Properties are correct"""
-    id = 'E3011'
+    id = 'E3008'
     shortdesc = 'Check values for appropriate values'
     description = 'Checks resource properties for Ref and GetAtt values'
     tags = ['base', 'resources']
@@ -46,7 +46,6 @@ class Value(CloudFormationLintRule):
         list_value_specs = kwargs.get('list_value_specs', {}).get('Ref')
         property_type = kwargs.get('property_type')
         property_name = kwargs.get('property_name')
-
         if path[-1] == 'Ref' and property_type == 'List' and path[-2] == property_name:
             specs = list_value_specs
         else:
@@ -138,7 +137,7 @@ class Value(CloudFormationLintRule):
                     cfn.check_value(
                         properties, prop, path,
                         check_ref=self.check_value_ref,
-                        check_getatt=self.check_value_getatt,
+                        check_get_att=self.check_value_getatt,
                         value_specs=self.value_type_specs.get(value_type, {}),
                         list_value_specs=self.value_type_specs.get(list_value_type, {}),
                         cfn=cfn, property_type=property_type, property_name=prop

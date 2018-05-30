@@ -1,5 +1,46 @@
 {
   "PropertyTypes": {
+    "AWS::ElasticBeanstalk::Application.ApplicationResourceLifecycleConfig": {
+      "Properties": {
+        "ServiceRole": {
+          "Value": {
+            "ValueType": "IamRole.Arn"
+          }
+        }
+      }
+    },
+    "AWS::EC2::SpotFleet.SpotFleetRequestConfigData": {
+      "Properties": {
+        "IamFleetRole": {
+          "Value": {
+            "ValueType": "IamRole.Arn"
+          }
+        }
+      }
+    },
+    "AWS::Batch::ComputeEnvironment.ComputeResources": {
+      "Properties": {
+        "SpotIamFleetRole": {
+          "Value": {
+            "ValueType": "IamRole.Arn"
+          }
+        },
+        "InstanceRole": {
+          "Value": {
+            "ValueType": "IamRole"
+          }
+        }
+      }
+    },
+    "AWS::S3::Bucket.ReplicationConfiguration": {
+      "Properties": {
+        "Role": {
+          "Value": {
+            "ValueType": "IamRole.Arn"
+          }
+        }
+      }
+    },
     "AWS::EC2::Instance.SsmAssociation": {
       "Properties": {
         "DocumentName": {
@@ -19,7 +60,6 @@
       }
     },
     "AWS::EC2::LaunchTemplate.IamInstanceProfile": {
-      "Documentation": "http://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-properties-ec2-launchtemplate-launchtemplatedata-iaminstanceprofile.html",
       "Properties": {
         "Arn": {
           "Value": {
@@ -35,6 +75,43 @@
     }
   },
   "ResourceTypes": {
+    "AWS::CodeBuild::Project": {
+      "Properties": {
+        "ServiceRole": {
+          "Value": {
+            "ValueType": "IamRole.Arn"
+          }
+        }
+      }
+    },
+    "AWS::Batch::ComputeEnvironment": {
+      "Properties": {
+        "ServiceRole": {
+          "Value": {
+            "ValueType": "IamRole.Arn"
+          }
+        }
+      }
+    },
+    "AWS::EMR::Cluster": {
+      "Properties": {
+        "AutoScalingRole": {
+          "Value": {
+            "ValueType": "IamRole"
+          }
+        },
+        "JobFlowRole": {
+          "Value": {
+            "ValueType": "IamInstanceProfile"
+          }
+        },
+        "ServiceRole": {
+          "Value": {
+            "ValueType": "IamRole"
+          }
+        }
+      }
+    },
     "AWS::AutoScaling::AutoScalingGroup": {
       "Properties": {
         "AvailabilityZones": {
@@ -63,6 +140,15 @@
         "VPCZoneIdentifier": {
           "Value": {
             "ValueType": "SubnetId"
+          }
+        }
+      }
+    },
+    "AWS::OpsWorks::UserProfile": {
+      "Properties": {
+        "IamUserArn": {
+          "Value": {
+            "ValueType": "IamUser.Arn"
           }
         }
       }
@@ -97,6 +183,15 @@
         "AllocationId": {
           "Value": {
             "ValueType": "AllocationId"
+          }
+        }
+      }
+    },
+    "AWS::KMS::Alias": {
+      "Properties": {
+        "TargetKeyId": {
+          "Value": {
+            "ValueType": "KmsKey"
           }
         }
       }
@@ -234,9 +329,88 @@
           }
         }
       }
+    },
+    "AWS::Lambda::Function": {
+      "Properties": {
+        "Role": {
+          "Value": {
+            "ValueType": "IamRole.Arn"
+          }
+        }
+      }
+    },
+    "AWS::Glue::Job": {
+      "Properties": {
+        "Role": {
+          "Value": {
+            "ValueType": "IamRole"
+          }
+        }
+      }
+    },
+    "AWS::Glue::Crawler": {
+      "Properties": {
+        "Role": {
+          "Value": {
+            "ValueType": "IamRole.Arn"
+          }
+        }
+      }
+    },
+    "AWS::ECS::Service": {
+      "Properties": {
+        "Role": {
+          "Value": {
+            "ValueType": "IamRole.Arn"
+          }
+        }
+      }
     }
   },
   "ValueTypes": {
+    "KmsKey": {
+      "Ref": {
+        "Parameters": [
+          "String"
+        ]
+      },
+      "Resources": [
+        "AWS::KMS::Key"
+      ],
+      "GetAtt": {
+        "AWS::KMS::Key": "Arn"
+      }
+    },
+    "IamRole": {
+      "Ref": {
+        "Parameters": [
+          "String"
+        ],
+        "Resources": [
+          "AWS::IAM::Role"
+        ]
+      }
+    },
+    "IamRole.Arn": {
+      "Ref": {
+        "Parameters": [
+          "String"
+        ]
+      },
+      "GetAtt": {
+        "AWS::IAM::Role": "Arn"
+      }
+    },
+    "IamUser.Arn": {
+      "Ref": {
+        "Parameters": [
+          "String"
+        ]
+      },
+      "GetAtt": {
+        "AWS::IAM::User": "Arn"
+      }
+    },
     "AllocationId": {
       "GetAtt": {
         "AWS::EC2::EIP": "AllocationId"
@@ -498,13 +672,16 @@
       "AWS::SSM::Parameter::Value<List<AWS::EC2::SecurityGroup::Id>>"
     ],
     "ImageId": [
-      "AWS::EC2::Image::Id"
+      "AWS::EC2::Image::Id",
+      "AWS::SSM::Parameter::Value<AWS::EC2::Image::Id>"
     ],
     "KeyPair": [
-      "AWS::EC2::KeyPair::KeyName"
+      "AWS::EC2::KeyPair::KeyName",
+      "AWS::SSM::Parameter::Value<AWS::EC2::KeyPair::KeyName>"
     ],
     "AvailabilityZone": [
-      "AWS::EC2::AvailabilityZone::Name"
+      "AWS::EC2::AvailabilityZone::Name",
+      "AWS::SSM::Parameter::Value<AWS::EC2::AvailabilityZone::Name>"
     ],
     "AvailabilityZones": [
       "List<AWS::EC2::AvailabilityZone::Name>",
