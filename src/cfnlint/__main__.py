@@ -33,6 +33,7 @@ def main():
             if args.output_file:
                 with open(args.output_file, 'w') as f:
                     f.write(matches_output)
+                    return 0
             else:
                 print(matches_output)
         return cfnlint.core.get_exit_code(matches)
