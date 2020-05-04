@@ -626,7 +626,7 @@ class ConfigMixIn(TemplateArgs, CliArgs, ConfigFileArgs, object):
     @property
     def output_file(self):
         """ output_file """
-        return self._get_argument_value('outputfile', False, True)
+        return self._get_argument_value('output_file', False, True)
 
     @property
     def update_specs(self):
