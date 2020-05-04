@@ -394,6 +394,10 @@ class CliArgs(object):
 
         standard.add_argument('--config-file', dest='config_file',
                               help='Specify the cfnlintrc file to use')
+        
+        standard.add_argument(
+            '-O', '--output-file', help='Output file of tests', dest="output_file"
+        )
 
         advanced.add_argument(
             '-o', '--override-spec', dest='override_spec',
@@ -453,7 +457,10 @@ class TemplateArgs(object):
                             defaults['append_rules'] = config_value
                     if config_name == 'override_spec':
                         if isinstance(config_value, (six.string_types)):
-                            defaults['override_spec'] = config_value
+                            defaults['override_spec'] = config_value        
+                    if config_name == 'output_file':
+                        if isinstance(config_value, (six.string_types)):
+                            defaults['output_file'] = config_value
                     if config_name == 'ignore_bad_template':
                         if isinstance(config_value, bool):
                             defaults['ignore_bad_template'] = config_value
@@ -615,6 +622,11 @@ class ConfigMixIn(TemplateArgs, CliArgs, ConfigFileArgs, object):
     def override_spec(self):
         """ override_spec """
         return self._get_argument_value('override_spec', False, True)
+    
+    @property
+    def output_file(self):
+        """ output_file """
+        return self._get_argument_value('outputfile', False, True)
 
     @property
     def update_specs(self):
