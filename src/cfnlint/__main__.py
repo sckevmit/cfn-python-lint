@@ -31,7 +31,7 @@ def main():
         matches_output = formatter.print_matches(matches, rules)
         if matches_output:
             if args.output_file:
-                with open(output_file, 'w') as f:
+                with open(args.output_file, 'w') as f:
                     f.write(matches_output)
             else:
                 print(matches_output)
